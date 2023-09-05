@@ -11,9 +11,7 @@ builder.Services.AddDbContext<ProjectSushiContext>(db =>
     db.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         b=> b.MigrationsAssembly("ProjectSushi.Web")));
 builder.Services.AddTransient<IUseDatabaseService, UseDatabaseService>();
-builder.Services.AddCors(options =>
-    options.AddPolicy("MyCorsPolicy", builder => 
-        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -28,7 +26,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseCors("MyCorsPolicy");
+app.UseCors(b => b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 app.UseRouting();
 
